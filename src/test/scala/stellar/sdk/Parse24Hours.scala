@@ -13,11 +13,10 @@ class Parse24Hours(implicit val ee: ExecutionEnv) extends Specification {
 
   "streaming transactions" should {
     "be successful" >> {
-      val oneDayAgo = ZonedDateTime.now().minusDays(1)
+      val oneDayAgo = ZonedDateTime.now().minusHours(1)
       Await.result(PublicNetwork.transactions(Now, Desc).map { stream =>
         stream
           .takeWhile(_.createdAt.isAfter(oneDayAgo))
-          .map { th => println(th); th }
           .toList
       }, 10.minutes) must not(beEmpty)
     }
