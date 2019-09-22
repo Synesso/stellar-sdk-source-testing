@@ -17,7 +17,7 @@ class Parse24Hours(implicit val ee: ExecutionEnv) extends Specification {
       Await.result(PublicNetwork.transactions(Now, Desc).map { stream =>
         stream
           .takeWhile(_.createdAt.isAfter(oneDayAgo))
-          .map { th => print('.'); th }
+          .map { th => print('.'); th.ledgerEntries }
           .toList
       }, 10.minutes) must not(beEmpty)
     }
