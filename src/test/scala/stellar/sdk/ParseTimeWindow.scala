@@ -10,14 +10,14 @@ import stellar.sdk.model.{Desc, Now}
 import scala.concurrent.duration._
 import scala.util.{Success, Try}
 
-class Parse24Hours(implicit val ee: ExecutionEnv) extends Specification {
+class ParseTimeWindow(implicit val ee: ExecutionEnv) extends Specification {
 
   "streaming transactions" should {
     "be successful" >> {
-      val oneDayAgo = ZonedDateTime.now().minusDays(1)
+      val timeWindow = ZonedDateTime.now().minusHours(3)
       PublicNetwork.transactions(Now, Desc).map { stream =>
         stream
-          .takeWhile(_.createdAt.isAfter(oneDayAgo))
+          .takeWhile(_.createdAt.isAfter(timeWindow))
           .map { th => Try(th.ledgerEntries) }
           .foldLeft(List.empty[Try[TransactionLedgerEntries]]) {
             case (acc, Success(t)) => acc
