@@ -14,7 +14,7 @@ class ParseTimeWindow(implicit val ee: ExecutionEnv) extends Specification {
 
   "streaming transactions" should {
     "be successful" >> {
-      val timeWindow = ZonedDateTime.now().minusHours(3)
+      val timeWindow = ZonedDateTime.now().minusHours(1)
       PublicNetwork.transactions(Now, Desc).map { stream =>
         stream
           .takeWhile(_.createdAt.isAfter(timeWindow))
