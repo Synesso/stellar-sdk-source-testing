@@ -52,6 +52,7 @@ class ParseTimeWindow(implicit val ee: ExecutionEnv) extends Specification with 
     }
   }
 
+/*
   "streaming effects" should {
     "be successful" >> {
       val effectCount = Await.result(PublicNetwork.effects(Now, Desc).map { stream =>
@@ -63,5 +64,6 @@ class ParseTimeWindow(implicit val ee: ExecutionEnv) extends Specification with 
       effectCount must beGreaterThan(0)
     }
   }
+*/
 
 }
