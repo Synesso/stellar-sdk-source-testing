@@ -14,6 +14,8 @@ import scala.util.{Failure, Success, Try}
 
 class ParseTimeWindow(implicit val ee: ExecutionEnv) extends Specification with LazyLogging {
 
+  sequential
+
   val timeWindow = ZonedDateTime.now().minusMinutes(65)
 
   "streaming transactions" should {
@@ -32,8 +34,9 @@ class ParseTimeWindow(implicit val ee: ExecutionEnv) extends Specification with 
           }
       }, 10.minutes)
       logger.info(s"Processed $successCount transactions")
-      failures.foreach { case (hash, Failure(f)) =>
-        logger.info(s"Transaction $hash failed with ${f.getMessage}")
+      logger.info(s"Encountered ${failures.size} errors parsing ledger entries")
+      failures.take(20).foreach { case (hash, Failure(f)) =>
+        logger.error(s"Transaction $hash failed", f)
       }
       failures.size mustEqual 0
     }
@@ -52,7 +55,6 @@ class ParseTimeWindow(implicit val ee: ExecutionEnv) extends Specification with 
     }
   }
 
-/*
   "streaming effects" should {
     "be successful" >> {
       val effectCount = Await.result(PublicNetwork.effects(Now, Desc).map { stream =>
@@ -64,6 +66,5 @@ class ParseTimeWindow(implicit val ee: ExecutionEnv) extends Specification with 
       effectCount must beGreaterThan(0)
     }
   }
-*/
 
 }
