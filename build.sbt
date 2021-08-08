@@ -7,6 +7,6 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= List(
-  "com.github.synesso" %% "scala-stellar-sdk" % "0.21.0",
+  "com.github.synesso" %% "scala-stellar-sdk" % "0.21.1",
   "org.specs2" %% "specs2-core" % "4.7.0" % "test"
 )

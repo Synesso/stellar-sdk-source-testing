@@ -1,14 +1,13 @@
 package stellar.sdk
 
 import java.time.ZonedDateTime
-
 import com.typesafe.scalalogging.LazyLogging
 import org.specs2.concurrent.ExecutionEnv
 import org.specs2.mutable.Specification
 import stellar.sdk.model.ledger.TransactionLedgerEntries
-import stellar.sdk.model.{Desc, Now}
+import stellar.sdk.model.{Asc, Desc, Now, Trade}
 
-import scala.concurrent.Await
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
 
@@ -64,6 +63,16 @@ class ParseTimeWindow(implicit val ee: ExecutionEnv) extends Specification with 
       }, 10.minutes)
       logger.info(s"Processed $effectCount effects")
       effectCount must beGreaterThan(0)
+    }
+  }
+
+  "streaming trades" should {
+    "be successful" >> {
+
+      val trades = Await.result(PublicNetwork.trades(Now, Asc), 10.minutes)
+      println(trades)
+
+      ok
     }
   }
 
